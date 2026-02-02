@@ -103,6 +103,18 @@ Public NotInheritable Class Program
                 waveOut.Play()
             End If
         End Sub
+            
+        Protected Overrides Sub Finalize()
+            Try
+                If waveOut IsNot Nothing Then
+                    RemoveHandler waveOut.PlaybackStopped, AddressOf OnPlaybackStopped
+                End If
+                waveOut?.Dispose()
+                reader?.Dispose()
+            Finally
+                MyBase.Finalize()
+            End Try
+        End Sub
     End Class
 
     Private ReadOnly bgmMainTheme As New SoundPlayer("Assets/main_theme.mp3")
